@@ -40,10 +40,10 @@ def get_status():
             if result['status'] == "OK": 
                 print_success(f"Success - GET {endpoint}")
             else:
-                print_error(f"Error - {method} {endpoint}")        
+                print_error(f"Error - {endpoint}")        
 
         else:
-            print_error(f"Error - {method} {endpoint}")
+            print_error(f"Error -{endpoint}")
             print(response.text)
     except:
         e = sys.exc_info()[0]
@@ -61,7 +61,7 @@ def get_all_products():
             for idx, product in enumerate(products):
                 print_success(str(idx+1)+". "+ product['title'])
         else:
-            print_error(f"Error - {method} {endpoint}")
+            print_error(f"Error - {endpoint}")
             print_error(response.text)
     except:
         e = sys.exc_info()[0]
@@ -78,7 +78,7 @@ def get_first_product_id():
             print_success("Title:- " + products['title'])
             print_success("Lines Of Code:- " + str(products['linesOfCode']))
         else:
-            print_error(f"Error - {method} {endpoint}")
+            print_error(f"Error - {endpoint}")
             print_error(response.text)
     except :
         e = sys.exc_info()[0]

@@ -44,7 +44,7 @@ def get_status():
 
         else:
             print_error(f"Error -{endpoint}")
-            print(response.text)
+
     except:
         e = sys.exc_info()[0]
         print_error("Exception "+ str(e))

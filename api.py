@@ -51,7 +51,7 @@ def get_all_products():
 
 def get_first_product_id():
     global first_product_id
-    endpoint = "/Products/s"+str(first_product_id)
+    endpoint = "/Products/"+str(first_product_id)
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:
         products = json.loads(response.text)

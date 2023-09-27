@@ -2,21 +2,20 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
-from helper import print_success, print_error , print_info
+from helper import print_success, print_info
+
 # Read environment variables from .env file
 load_dotenv()
 
-first_product_id=None
-# Set up headers
-headers = {
+def make_request(endpoint, method="GET", data=None):
+    base_url = os.environ['BASE_URL']
+    version = os.environ["VERSION"]
+    
+    # Set up headers
+    headers = {
     "Authorization": f"Basic {os.environ['BEARER_TOKEN']}", 
     "CwtLicenseKey": f"{os.environ['CWT_LICENSE_KEY']}"
     }
-
-base_url = os.environ['BASE_URL']
-version = os.environ["VERSION"]
-
-def make_request(endpoint, method="GET", data=None):
 
     url = f"{base_url}{version}{endpoint}"
     print_info("\nFetching " + url)
@@ -39,7 +38,7 @@ def get_status():
             print_success(f"Success - GET {endpoint}")
 
 def get_all_products():
-    global first_product_id
+    first_product_id=None
     endpoint = "/Products"
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:
@@ -48,9 +47,9 @@ def get_all_products():
         first_product_id = products[0]['id']
         for idx, product in enumerate(products):
             print_success(str(idx+1)+". "+ product['title'])
+    return first_product_id
 
-def get_first_product_id():
-    global first_product_id
+def get_product_info(first_product_id):
     endpoint = "/Products/"+str(first_product_id)
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:

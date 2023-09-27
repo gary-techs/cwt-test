@@ -1,0 +1,294 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "CodeWeTrust API",
+      "description": "Requires 'Authorization: Basic' header (base64 encoded 'user:token' pair, \nsee RestApiSettings.Users in appsettings.json to configure) \nand a 'CwtLicenseKey' header (base64 encoded license key). ",
+      "contact": {
+        "name": "CodeWeTrust",
+        "url": "https://codewetrust.com",
+        "email": "info@codewetrust.com"
+      },
+      "version": "v1"
+    },
+    "paths": {
+      "/api/v1/reports/Engineering/{sessionId}": {
+        "get": {
+          "tags": [
+            "Engineering"
+          ],
+          "parameters": [
+            {
+              "name": "sessionId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/reports/Executive/{scanId}": {
+        "get": {
+          "tags": [
+            "Executive"
+          ],
+          "parameters": [
+            {
+              "name": "scanId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/reports/Executive/details/{scanId}": {
+        "get": {
+          "tags": [
+            "Executive"
+          ],
+          "parameters": [
+            {
+              "name": "scanId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "400": {
+              "description": "Bad Request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/Products": {
+        "get": {
+          "tags": [
+            "Products"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ProductVm"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/Products/{id}": {
+        "get": {
+          "tags": [
+            "Products"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProductVm"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/Status": {
+        "get": {
+          "tags": [
+            "Status"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/StatusVm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "ProblemDetails": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "nullable": true
+            },
+            "title": {
+              "type": "string",
+              "nullable": true
+            },
+            "status": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "detail": {
+              "type": "string",
+              "nullable": true
+            },
+            "instance": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": { }
+        },
+        "ProductVm": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "nullable": true
+            },
+            "title": {
+              "type": "string",
+              "nullable": true
+            },
+            "repositoriesCount": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "linesOfCode": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "languages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            },
+            "scans": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ScanVm"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "ScanVm": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "nullable": true
+            },
+            "date": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        },
+        "StatusVm": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "nullable": true
+            },
+            "app": {
+              "type": "string",
+              "nullable": true
+            },
+            "date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "version": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }

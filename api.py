@@ -1,6 +1,6 @@
-import os, re, json, requests
+import os, json, requests
 from dotenv import load_dotenv
-from helper import print_success, print_info
+from helper import print_success, print_info, get_file_name_from_header
 
 # Read environment variables from .env file
 load_dotenv()
@@ -37,16 +37,15 @@ def get_status():
 
 
 def get_all_products():
-    first_product = None
+    products = None
     endpoint = "/Products"
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:
         products = json.loads(response.text)
         print_success(f"Success - GET {endpoint}")
-        first_product = products[0]
         for idx, product in enumerate(products):
             print_success(f"{str(idx + 1)}. {product['title']}")
-    return first_product
+    return products
 
 def get_product_info(product_id):
     endpoint = f"/Products/{product_id}"
@@ -62,48 +61,36 @@ def save_engineering_report_by_scan_id(scan_id):
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:
         print_success(f"Success - GET {endpoint}")
-        # Extract the filename from the Content-Disposition header using regex
-        match = re.search(
-            r"filename=(.*?)(?:;|$)", response.headers.get("content-disposition")
-        )
-        filename = f"{match.group(1)}"
+        file_name = get_file_name_from_header(response.headers)
 
         # Save the file to disk
-        with open(filename, "wb") as file:
+        with open(file_name, "wb") as file:
             file.write(response.content)
 
-        print_success(f"File saved as {filename}")
+        print_success(f"File saved as {file_name}")
 
 def save_executive_report_by_scan_id(scan_id):
     endpoint = f"/reports/Executive/{str(scan_id)}"
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:
-        print_success(f"Success - GET {endpoint}")
-        # Extract the filename from the Content-Disposition header using regex
-        match = re.search(
-            r"filename=(.*?)(?:;|$)", response.headers.get("content-disposition")
-        )
-        filename = f"{match.group(1)}"
+        print_success(f"Success - GET {endpoint}")        
+        file_name = get_file_name_from_header(response.headers)
 
         # Save the file to disk
-        with open(filename, "wb") as file:
+        with open(file_name, "wb") as file:
             file.write(response.content)
 
-        print_success(f"File saved as {filename}")
+        print_success(f"File saved as {file_name}")
 
 def save_executive_details_report_by_scan_id(scan_id):
     endpoint = f"/reports/Executive/details/{str(scan_id)}"
     response = make_request(endpoint, method="GET")
     if response.status_code == 200:
         print_success(f"Success - GET {endpoint}")
-        # Extract the filename from the Content-Disposition header using regex
-        match = re.search(
-            r"filename=(.*?)(?:;|$)", response.headers.get("content-disposition")
-        )
-        filename = f"{match.group(1)}"
+        file_name = get_file_name_from_header(response.headers)
 
         # Save the file to disk
-        with open(filename, "wb") as file:
+        with open(file_name, "wb") as file:
             file.write(response.content)
 
-        print_success(f"File saved as {filename}")
+        print_success(f"File saved as {file_name}")

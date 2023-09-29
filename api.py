@@ -66,7 +66,7 @@ def save_engineering_report_by_scan_id(scan_id):
         match = re.search(
             r"filename=(.*?)(?:;|$)", response.headers.get("content-disposition")
         )
-        filename = f"{os.environ['DOWNLOADED_FILES_PATH']}{match.group(1)}"
+        filename = f"{match.group(1)}"
 
         # Save the file to disk
         with open(filename, "wb") as file:
@@ -83,7 +83,7 @@ def save_executive_report_by_scan_id(scan_id):
         match = re.search(
             r"filename=(.*?)(?:;|$)", response.headers.get("content-disposition")
         )
-        filename = f"{os.environ['DOWNLOADED_FILES_PATH']}{match.group(1)}"
+        filename = f"{match.group(1)}"
 
         # Save the file to disk
         with open(filename, "wb") as file:
@@ -100,7 +100,7 @@ def save_executive_details_report_by_scan_id(scan_id):
         match = re.search(
             r"filename=(.*?)(?:;|$)", response.headers.get("content-disposition")
         )
-        filename = f"{os.environ['DOWNLOADED_FILES_PATH']}{match.group(1)}"
+        filename = f"{match.group(1)}"
 
         # Save the file to disk
         with open(filename, "wb") as file:
